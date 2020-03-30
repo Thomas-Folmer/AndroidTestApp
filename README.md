@@ -1,4 +1,4 @@
-# Projet de test Open Android Test App
+# Projet Open Android Test App
 
 Je te propose un petit challenge de code afin de voir ta façon de penser.
 
