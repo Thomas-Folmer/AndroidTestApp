@@ -1,0 +1,12 @@
+package com.opengroupe.androidtestapp
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+
+class GithubSearchActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
+}
