@@ -1,10 +1,10 @@
 package com.opengroupe.androidtestapp.ui.search
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +31,7 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
         setContentView(R.layout.activity_main)
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        checkedBoxSynchronised()
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -47,10 +48,25 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
 
     fun getFilters(query: String): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
-        map["q"] = "${query}+topic:android"
+        map["q"] = if(iosType.isChecked) "${query}+topic:ios" else "${query}+topic:android"
         map["page"] = 1
         map["per_page"] = 10 //to limit items count
         return map
+    }
+    fun checkedBoxSynchronised(){
+        androidType.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (isChecked) {
+                // Perform task
+                iosType.isChecked = false
+            }
+        }
+
+        iosType.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (isChecked) {
+                // Perform task
+                androidType.isChecked = false
+            }
+        }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         return true
