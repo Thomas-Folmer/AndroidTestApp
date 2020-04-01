@@ -12,9 +12,9 @@ import javax.inject.Inject
 class GithubSearchApplication : Application(), HasActivityInjector {
 
     @Inject
-    lateinit var mAndroidDispatchingInjector: DispatchingAndroidInjector<Activity>
+    lateinit var androidDispatchingInjector: DispatchingAndroidInjector<Activity>
 
-    override fun activityInjector(): AndroidInjector<Activity> = mAndroidDispatchingInjector
+    override fun activityInjector(): AndroidInjector<Activity> = androidDispatchingInjector
 
     override fun onCreate() {
         super.onCreate()
@@ -22,14 +22,14 @@ class GithubSearchApplication : Application(), HasActivityInjector {
                 .application(this)
                 .build()
                 .inject(this)
-        mApp = this
+        githubSearchApplication = this
 
     }
     companion object {
-        private var mApp: GithubSearchApplication? = null
+        private var githubSearchApplication: GithubSearchApplication? = null
         @JvmStatic
         fun getContext(): Context? {
-            return mApp?.getApplicationContext()
+            return githubSearchApplication?.getApplicationContext()
         }
     }
 

@@ -1,10 +1,7 @@
 package com.opengroupe.androidtestapp.ui.search
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.CompoundButton
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -71,11 +68,7 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
             }
         }
     }
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        return true
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = true
 
     override fun onFetchedRepositories(searchRepositoryResponse: SearchRepositoryResponse) {
         view_empty_result.visibility = View.GONE
@@ -118,9 +111,6 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
         view_error.visibility = View.GONE
         searchResultRecyclerView.visibility = View.GONE
     }
-
-
-
 
 
     override fun onDestroy() {

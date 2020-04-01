@@ -42,7 +42,7 @@ abstract class CallbackWrapper<T : Any> : DisposableObserver<T>() {
 
 
     override fun onComplete() {
-
+      dispose()
     }
 
     private fun getErrorMessage(responseBody: ResponseBody): String {
