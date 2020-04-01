@@ -5,14 +5,11 @@ import com.opengroupe.androidtestapp.data.model.SearchRepositoryResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface RestApi {
 
     @GET("/search/repositories")
-    fun searchRepo(@Query("q") query: String,
-                   @Query("page")  page : Int,
-                   @Query("sort") sort : String,
-                   @Query("order") order : String,
-                   @Query("per_page")  perPage : Int ): Observable<SearchRepositoryResponse>
+    fun searchRepo(@QueryMap queryMap : Map<String, @JvmSuppressWildcards  Any>): Observable<SearchRepositoryResponse>
 
 }

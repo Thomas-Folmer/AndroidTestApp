@@ -1,8 +1,15 @@
 package com.opengroupe.androidtestapp.ui.search
 
 import com.opengroupe.androidtestapp.data.model.SearchRepositoryResponse
-import com.opengroupe.androidtestapp.ui.base.MvpView
 
-interface SearchRepositoryMvpView : MvpView {
+interface SearchRepositoryMvpView {
     fun onFetchedRepositories(searchRepositoryResponse: SearchRepositoryResponse)
+
+    val isNetworkConnected: Boolean
+
+    fun showLoading()
+    fun hideLoading()
+    fun onError(message: String?)
+    fun emtyResult()
+
 }

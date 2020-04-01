@@ -1,7 +1,9 @@
 package com.opengroupe.androidtestapp.ui.search
 
 import android.annotation.SuppressLint
+import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -42,7 +44,8 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
                 if (!search_view.isIconified) {
                     search_view.isIconified = true
                 }
-                searchRepositoryMvpPresenter.onSearchRepositoryClick(query,1,"","desc",10)
+                searchRepositoryMvpPresenter.onSearchRepositoryClick(getFilters(query))
+
                 return false
             }
 
@@ -52,6 +55,14 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
 
     }
 
+    fun getFilters(query: String): Map<String, Any> {
+        val map: MutableMap<String, Any> = HashMap()
+        Log.d("query_final_value","${query}+topic:android")
+        map["q"] = "${query}+topic:android"
+        map["page"] = 1
+        map["per_page"] = 12
+        return map
+    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         return true
     }
@@ -59,6 +70,10 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
     override fun onOptionsItemSelected(item: MenuItem): Boolean = true
 
     override fun onFetchedRepositories(searchRepositoryResponse: SearchRepositoryResponse) {
+        view_empty_result.visibility = View.GONE
+        view_error.visibility = View.GONE
+        searchResultRecyclerView.visibility = View.VISIBLE
+
         val linearLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
         val searchRepositoryAdapter = SearchRepositoryAdapter(searchRepositoryResponse.items, object : SearchRepositoryAdapter.OnItemClickListener {
@@ -75,6 +90,7 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
     override fun showLoading() {
         hideLoading()
         progress_bar?.visibility = View.VISIBLE
+        view_welcome.visibility = View.GONE
     }
 
     override fun hideLoading() {
@@ -82,36 +98,21 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
     }
 
     override fun onError(message: String?) {
-        if (message != null) {
-            showSnackBar(message)
-        } else {
-            showSnackBar(getString(R.string.something_went_wrong))
-        }
+        view_error.visibility = View.VISIBLE
+        view_empty_result.visibility = View.GONE
+        searchResultRecyclerView.visibility = View.GONE
     }
 
-    override fun onError(@StringRes resId: Int) {
-        onError(getString(resId))
-    }
-
-    override fun showMessage(message: String?) {
-        if (message != null) {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun showMessage(@StringRes resId: Int) {
-        showMessage(getString(resId))
+    override fun emtyResult() {
+        hideLoading()
+        view_empty_result.visibility = View.VISIBLE
+        view_error.visibility = View.GONE
+        searchResultRecyclerView.visibility = View.GONE
     }
 
 
-    private fun showSnackBar(message: String) {
-        val snackbar = Snackbar.make(findViewById<View>(android.R.id.content), message, Snackbar.LENGTH_SHORT)
-        val textView = snackbar.view.findViewById<TextView>(R.id.snackbar_text) as TextView
-        textView.setTextColor(ContextCompat.getColor(this, android.R.color.white))
-        snackbar.show()
-    }
+
+
 
     override fun onDestroy() {
         searchRepositoryMvpPresenter.onDetach()

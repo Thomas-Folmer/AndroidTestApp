@@ -6,9 +6,5 @@ import io.reactivex.Observable
 import javax.inject.Inject
 
 class ApiHelperImpl @Inject constructor(private val restApi: RestApi) : ApiHelper {
-    override fun searchRepo(searchQuery: String,
-                            page: Int,
-                            sort: String,
-                            order: String,
-                            perPage: Int): Observable<SearchRepositoryResponse> = restApi.searchRepo(searchQuery,page, sort, order, perPage)
+    override fun searchRepo(searchQueryMap: Map<String,Any>): Observable<SearchRepositoryResponse> = restApi.searchRepo(searchQueryMap)
 }
