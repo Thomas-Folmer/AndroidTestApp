@@ -1,7 +1,6 @@
 package com.opengroupe.androidtestapp.data.model
 
 import android.os.Parcelable
-import com.opengroupe.androidtestapp.data.remote.BaseResponse
 import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 
@@ -16,4 +15,4 @@ data class SearchRepositoryResponse(
 
         @Json(name = "items")
         val items: List<RepoItem>
-) : BaseResponse(), Parcelable
+) :  Parcelable

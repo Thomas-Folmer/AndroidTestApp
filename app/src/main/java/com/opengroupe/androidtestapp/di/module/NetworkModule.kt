@@ -1,7 +1,6 @@
 package com.opengroupe.androidtestapp.di.module
 
 import com.opengroupe.androidtestapp.BuildConfig
-import com.opengroupe.androidtestapp.data.remote.ApiKeyInterceptor
 import com.opengroupe.androidtestapp.data.remote.RestApi
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -35,7 +34,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(apiKeyInterceptor: ApiKeyInterceptor): OkHttpClient {
+    fun provideOkHttpClient(): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
 
         if (BuildConfig.DEBUG) {
@@ -48,8 +47,6 @@ class NetworkModule {
                 .connectTimeout(CONNECTION_TIMEOUT_SECS, TimeUnit.SECONDS)
                 .readTimeout(CONNECTION_TIMEOUT_SECS, TimeUnit.SECONDS)
                 .writeTimeout(CONNECTION_TIMEOUT_SECS, TimeUnit.SECONDS)
-
-        okHttpClientBuilder.addInterceptor(apiKeyInterceptor)
 
         return okHttpClientBuilder.build()
     }
