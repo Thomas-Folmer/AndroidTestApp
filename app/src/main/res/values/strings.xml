@@ -8,5 +8,6 @@
     <string name="no_network">Connect to the Internet or check your network connection.</string>
     <string name="ios">iOS</string>
     <string name="android">Android</string>
+    <string name="search">Search</string>
 
 </resources>

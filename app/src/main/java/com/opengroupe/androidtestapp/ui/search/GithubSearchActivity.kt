@@ -42,6 +42,9 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
                 return  false
             }
         })
+        searchButton.setOnClickListener {
+            searchRepositoryMvpPresenter.onSearchRepositoryClick(getFilters(search_view.query.toString()))
+        }
         searchRepositoryMvpPresenter.onAttach(this)
 
     }
