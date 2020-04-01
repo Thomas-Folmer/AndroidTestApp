@@ -1,21 +1,14 @@
 package com.opengroupe.androidtestapp.ui.search
 
-import android.annotation.SuppressLint
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.opengroupe.androidtestapp.R
 import com.opengroupe.androidtestapp.data.model.RepoItem
 import com.opengroupe.androidtestapp.data.model.SearchRepositoryResponse
@@ -41,15 +34,12 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                if (!search_view.isIconified) {
-                    search_view.isIconified = true
-                }
                 searchRepositoryMvpPresenter.onSearchRepositoryClick(getFilters(query))
-
                 return false
             }
-
-            override fun onQueryTextChange(s: String): Boolean = false
+            override fun onQueryTextChange(s: String): Boolean {
+                return  false
+            }
         })
         searchRepositoryMvpPresenter.onAttach(this)
 
@@ -57,10 +47,9 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
 
     fun getFilters(query: String): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
-        Log.d("query_final_value","${query}+topic:android")
         map["q"] = "${query}+topic:android"
         map["page"] = 1
-        map["per_page"] = 12
+        map["per_page"] = 10 //to limit items count
         return map
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -99,11 +88,12 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
 
     override fun onError(message: String?) {
         view_error.visibility = View.VISIBLE
+        view_error.setText(message!!,view_error)
         view_empty_result.visibility = View.GONE
         searchResultRecyclerView.visibility = View.GONE
     }
 
-    override fun emtyResult() {
+    override fun emptyResult() {
         hideLoading()
         view_empty_result.visibility = View.VISIBLE
         view_error.visibility = View.GONE
@@ -119,7 +109,6 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
         super.onDestroy()
     }
 
-    @SuppressLint("CheckResult")
     private fun performDependencyInjection() {
         AndroidInjection.inject(this)
     }

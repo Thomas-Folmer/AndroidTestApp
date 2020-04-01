@@ -10,6 +10,6 @@ interface SearchRepositoryMvpView {
     fun showLoading()
     fun hideLoading()
     fun onError(message: String?)
-    fun emtyResult()
+    fun emptyResult()
 
 }

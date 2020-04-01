@@ -1,5 +1,9 @@
 package com.opengroupe.androidtestapp.ui.search
 
+import android.content.Context
+import androidx.core.content.ContextCompat
+import com.opengroupe.androidtestapp.GithubSearchApplication
+import com.opengroupe.androidtestapp.R
 import com.opengroupe.androidtestapp.data.DataManager
 import com.opengroupe.androidtestapp.data.model.SearchRepositoryResponse
 import com.opengroupe.androidtestapp.ui.base.BasePresenter
@@ -26,17 +30,19 @@ class SearchRepositoryPresenter<V : SearchRepositoryMvpView> @Inject constructor
                         if(!searchRepositoryResponse.items.isNullOrEmpty()){
                             getMvpView()?.onFetchedRepositories(searchRepositoryResponse)
                         } else {
-                            getMvpView()?.emtyResult()
+                            getMvpView()?.emptyResult()
                         }
                     }
 
                     override fun onError(error: Any) {
                         // dismiss the progress bar
-                        getMvpView()?.hideLoading()
-                        if (getMvpView()?.isNetworkConnected!!){
-                            handleApiError(error)
-                        } else {
-                            handleApiError(error)
+                        getMvpView()?.let {view ->
+                            view.hideLoading()
+                            if (!view?.isNetworkConnected!!){
+                                view?.onError(GithubSearchApplication.getContext()?.getString(R.string.no_network))
+                            } else {
+                                view?.onError(error.toString())
+                            }
                         }
                         // error handling
                     }

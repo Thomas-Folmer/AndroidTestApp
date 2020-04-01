@@ -21,10 +21,6 @@ open class BasePresenter<V : SearchRepositoryMvpView> constructor(private val dm
 
     fun getMvpView(): V? = mvpView
 
-    override fun handleApiError(error: Any) {
-        mvpView?.onError(error.toString())
-    }
-
     override fun onSearchRepositoryClick(searchQueryMap: Map<String, Any>) {
         TODO("Not yet implemented")
     }
