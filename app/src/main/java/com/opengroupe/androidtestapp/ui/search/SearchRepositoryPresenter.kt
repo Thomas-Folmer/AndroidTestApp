@@ -5,13 +5,13 @@ import com.opengroupe.androidtestapp.GithubSearchApplication
 import com.opengroupe.androidtestapp.R
 import com.opengroupe.androidtestapp.data.model.SearchRepositoryResponse
 import com.opengroupe.androidtestapp.data.remote.ApiHelper
-import com.opengroupe.androidtestapp.ui.base.BasePresenter
 import com.opengroupe.androidtestapp.utils.rx.SchedulerProvider
 import javax.inject.Inject
 import com.opengroupe.androidtestapp.data.remote.CallbackWrapper
 
 
-class SearchRepositoryPresenter<V : SearchRepositoryMvpView> @Inject constructor(dataManager: ApiHelper, val scheduler: SchedulerProvider) : BasePresenter<V>(dataManager), SearchRepositoryMvpPresenter<V> {
+class SearchRepositoryPresenter<V : SearchRepositoryMvpView> @Inject constructor(val apiHelper: ApiHelper, val scheduler: SchedulerProvider) :  SearchRepositoryMvpPresenter<V> {
+    private var mvpView: V? = null
 
     @SuppressLint("CheckResult")
     override fun onSearchRepositoryClick(searchQueryMap: Map<String,Any>) {
@@ -19,7 +19,7 @@ class SearchRepositoryPresenter<V : SearchRepositoryMvpView> @Inject constructor
         // display progress bar
         getMvpView()?.showLoading()
 
-        getDataManager()?.searchRepo(searchQueryMap)?.subscribeOn(scheduler.io())?.observeOn(scheduler.ui())?.subscribeWith(object : CallbackWrapper<SearchRepositoryResponse>() {
+        apiHelper.searchRepo(searchQueryMap)?.subscribeOn(scheduler.io())?.observeOn(scheduler.ui())?.subscribeWith(object : CallbackWrapper<SearchRepositoryResponse>() {
 
                     override fun onSuccess(t: SearchRepositoryResponse) {
                         // dismiss the progress bar
@@ -47,4 +47,18 @@ class SearchRepositoryPresenter<V : SearchRepositoryMvpView> @Inject constructor
                     }
                 })
     }
+
+
+
+    override fun onDetach() {
+        mvpView = null
+    }
+
+    override fun onAttach(mvpView: V) {
+        this.mvpView = mvpView
+    }
+
+    fun getMvpView(): V? = mvpView
+
+
 }

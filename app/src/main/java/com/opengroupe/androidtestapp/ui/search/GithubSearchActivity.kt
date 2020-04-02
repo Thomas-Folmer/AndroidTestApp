@@ -32,6 +32,9 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
+                 if (!search_view.isIconified) {
+                  search_view.isIconified = true
+                 }
                 searchRepositoryMvpPresenter.onSearchRepositoryClick(getFilters(query))
                 return false
             }
