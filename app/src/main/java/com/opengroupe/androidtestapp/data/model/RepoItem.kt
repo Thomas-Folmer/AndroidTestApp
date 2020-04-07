@@ -2,9 +2,10 @@ package com.opengroupe.androidtestapp.data.model
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 
-@Parcelize
+@JsonClass(generateAdapter = true)
 data class RepoItem(
 
         @Json(name = "stargazers_count")
@@ -222,4 +223,4 @@ data class RepoItem(
 
         @Json(name = "forks_count")
         val forksCount: Int?
-) : Parcelable
+)

@@ -2,9 +2,10 @@ package com.opengroupe.androidtestapp.data.model
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 
-@Parcelize
+@JsonClass(generateAdapter = true)
 data class License(
 
         @Json(name = "name")
@@ -18,4 +19,4 @@ data class License(
 
         @Json(name = "url")
         val url: String?
-) : Parcelable
+)
