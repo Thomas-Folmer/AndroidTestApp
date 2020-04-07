@@ -36,12 +36,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation "com.google.android.material:material:$versions.material"
+    implementation "androidx.recyclerview:recyclerview:$versions.materialRv"
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
-    implementation "androidx.recyclerview:recyclerview:$versions.materialRv"
-    implementation "com.squareup.retrofit2:converter-moshi:2.0.0"
+    implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
 
     //OKHTTP
@@ -52,7 +52,8 @@ dependencies {
     implementation "com.google.dagger:dagger:$versions.dagger"
     implementation "com.google.dagger:dagger-android:$versions.dagger"
     implementation "com.google.dagger:dagger-android-support:$versions.dagger"
-    implementation "com.google.dagger:dagger-android:$versions.dagger"
+
+
     // Adds the annotation processor dependency to the annotation processor cl
     kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
     kapt "com.google.dagger:dagger-android-processor:$versions.dagger"

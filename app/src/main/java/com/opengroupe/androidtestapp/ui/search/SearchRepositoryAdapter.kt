@@ -10,13 +10,18 @@ import com.opengroupe.androidtestapp.R
 import com.opengroupe.androidtestapp.data.model.RepoItem
 import kotlinx.android.synthetic.main.list_item_repo.view.*
 
-class SearchRepositoryAdapter(private val repositoriesList: List<RepoItem>, private val onItemClickListener: OnItemClickListener) : RecyclerView.Adapter<SearchRepositoryAdapter.ViewHolder>() {
+class SearchRepositoryAdapter : RecyclerView.Adapter<SearchRepositoryAdapter.ViewHolder>() {
+
+    private var repositoriesList= ArrayList<RepoItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_repo, parent, false)
         return ViewHolder(view)
     }
-
+    fun setRepositoryList(repositoriesList: List<RepoItem>) {
+      this.repositoriesList = repositoriesList as ArrayList<RepoItem>
+      notifyDataSetChanged()
+    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(repositoriesList[position])
     }
@@ -33,14 +38,9 @@ class SearchRepositoryAdapter(private val repositoriesList: List<RepoItem>, priv
                     .apply(RequestOptions().placeholder(R.drawable.ic_avatar).error(R.drawable.ic_avatar))
                     .into(itemView.avatar_image)
 
-            itemView.setOnClickListener {
-                onItemClickListener.onClick(repoItem)
-            }
         }
     }
 
-    interface OnItemClickListener {
-        fun onClick(repo: RepoItem)
-    }
+
 
 }

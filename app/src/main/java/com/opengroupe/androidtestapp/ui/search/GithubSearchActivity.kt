@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.opengroupe.androidtestapp.R
-import com.opengroupe.androidtestapp.data.model.RepoItem
 import com.opengroupe.androidtestapp.data.model.SearchRepositoryResponse
 import com.opengroupe.androidtestapp.utils.NetworkUtils
 import dagger.android.AndroidInjection
@@ -15,11 +14,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
-class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
+class GithubSearchActivity : AppCompatActivity(), SearchRepositoryContract.View {
 
+    lateinit var  linearLayoutManager : LinearLayoutManager
+    lateinit var searchRepositoryAdapter : SearchRepositoryAdapter
 
     @Inject
-    lateinit var searchRepositoryMvpPresenter: SearchRepositoryMvpPresenter<SearchRepositoryMvpView>
+    lateinit var presenter: SearchRepositoryContract.Presenter<SearchRepositoryContract.View>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,13 +30,17 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
         checkedBoxSynchronised()
+
+        linearLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        searchRepositoryAdapter = SearchRepositoryAdapter()
+
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                  if (!search_view.isIconified) {
                   search_view.isIconified = true
                  }
-                searchRepositoryMvpPresenter.onSearchRepositoryClick(getFilters(query))
+                presenter.onSearchRepositoryClick(getFilters(query))
                 return false
             }
             override fun onQueryTextChange(s: String): Boolean {
@@ -43,9 +48,9 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
             }
         })
         searchButton.setOnClickListener {
-            searchRepositoryMvpPresenter.onSearchRepositoryClick(getFilters(search_view.query.toString()))
+            presenter.onSearchRepositoryClick(getFilters(search_view.query.toString()))
         }
-        searchRepositoryMvpPresenter.onAttach(this)
+        presenter.onAttach(this)
 
     }
 
@@ -77,15 +82,10 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
         view_empty_result.visibility = View.GONE
         view_error.visibility = View.GONE
         searchResultRecyclerView.visibility = View.VISIBLE
-
-        val linearLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
-        val searchRepositoryAdapter = SearchRepositoryAdapter(searchRepositoryResponse.items, object : SearchRepositoryAdapter.OnItemClickListener {
-            override fun onClick(repo: RepoItem) {
-            }
-        })
+        searchRepositoryAdapter.setRepositoryList(searchRepositoryResponse.items)
         searchResultRecyclerView.layoutManager = linearLayoutManager
         searchResultRecyclerView.adapter = searchRepositoryAdapter
+
     }
 
     override val isNetworkConnected: Boolean
@@ -103,7 +103,7 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
 
     override fun onError(message: String?) {
         view_error.visibility = View.VISIBLE
-        view_error.setText(message!!,view_error)
+        view_error.setText(message ?: "",view_error)
         view_empty_result.visibility = View.GONE
         searchResultRecyclerView.visibility = View.GONE
     }
@@ -117,7 +117,7 @@ class GithubSearchActivity : AppCompatActivity(), SearchRepositoryMvpView {
 
 
     override fun onDestroy() {
-        searchRepositoryMvpPresenter.onDetach()
+        presenter.onDetach()
         super.onDestroy()
     }
 

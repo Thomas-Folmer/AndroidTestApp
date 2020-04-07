@@ -25,7 +25,7 @@ class LogoWithTextView(context: Context, attrs: AttributeSet) : LinearLayout(con
         val backgroundId = typedArray.getResourceId(R.styleable.LogoWithTextViewAttrs_background, R.drawable.logo_welcome)
         val text = typedArray.getString(R.styleable.LogoWithTextViewAttrs_text)
         setBackground(backgroundId,view)
-        setText(text!!,view)
+        setText(text ?: "",view)
     }
 
     fun setBackground(@DrawableRes resId : Int,view: View) {

@@ -1,0 +1,77 @@
+Index: app/src/main/java/com/opengroupe/androidtestapp/data/model/SearchRepositoryResponse.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/opengroupe/androidtestapp/data/model/SearchRepositoryResponse.kt	(revision ac6b766cfb24d133c96278c01be15c96ffd2b668)
++++ app/src/main/java/com/opengroupe/androidtestapp/data/model/SearchRepositoryResponse.kt	(date 1586255693000)
+@@ -1,18 +1,56 @@
+ package com.opengroupe.androidtestapp.data.model
+ 
+-import android.os.Parcelable
+-import com.squareup.moshi.Json
+ import kotlinx.android.parcel.Parcelize
++import com.google.gson.annotations.SerializedName
++
+ 
+-@Parcelize
++
++
+ data class SearchRepositoryResponse(
++        @SerializedName("incomplete_results")
++    val incompleteResults: Boolean,
++        @SerializedName("items")
++    val repoItems: List<RepoItem>,
++        @SerializedName("total_count")
++    val totalCount: Int
++)
+ 
+-        @Json(name = "total_count")
+-        val totalCount: Int?,
+ 
+-        @Json(name = "incomplete_results")
+-        val incompleteResults: Boolean?,
+-
+-        @Json(name = "items")
+-        val items: List<RepoItem>
+-) :  Parcelable
+\ No newline at end of file
++data class Owner(
++    @SerializedName("avatar_url")
++    val avatarUrl: String,
++    @SerializedName("events_url")
++    val eventsUrl: String,
++    @SerializedName("followers_url")
++    val followersUrl: String,
++    @SerializedName("following_url")
++    val followingUrl: String,
++    @SerializedName("gists_url")
++    val gistsUrl: String,
++    @SerializedName("gravatar_id")
++    val gravatarId: String,
++    @SerializedName("html_url")
++    val htmlUrl: String,
++    @SerializedName("id")
++    val id: Int,
++    @SerializedName("login")
++    val login: String,
++    @SerializedName("node_id")
++    val nodeId: String,
++    @SerializedName("organizations_url")
++    val organizationsUrl: String,
++    @SerializedName("received_events_url")
++    val receivedEventsUrl: String,
++    @SerializedName("repos_url")
++    val reposUrl: String,
++    @SerializedName("site_admin")
++    val siteAdmin: Boolean,
++    @SerializedName("starred_url")
++    val starredUrl: String,
++    @SerializedName("subscriptions_url")
++    val subscriptionsUrl: String,
++    @SerializedName("type")
++    val type: String,
++    @SerializedName("url")
++    val url: String
++)
+\ No newline at end of file
